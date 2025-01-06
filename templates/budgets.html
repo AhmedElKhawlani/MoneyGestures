@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgets</title>
+</head>
+<body>
+    <h1>Budgets</h1>
+    <a href="{{ url_for('add_budget') }}">Add New Budget</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Initial Amount</th>
+                <th>Actual Amount</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for budget in budgets %}
+            <tr>
+                <td>{{ budget.name }}</td>
+                <td>{{ budget.initial_amount }}</td>
+                <td>{{ budget.actual_amount }}</td>
+                <td>{{ budget.date_creation }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

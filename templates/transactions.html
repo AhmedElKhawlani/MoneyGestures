@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+</head>
+<body>
+    <h1>Transactions</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date and Time</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Nature</th>
+                <th>Amount</th>
+                <th>Account</th>
+                <th>Budget</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.category }}</td>
+                <td>{{ transaction.nature }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.account }}</td>
+                <td>{{ transaction.budget }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('add_transaction') }}">
+        <button>Add New Transaction</button>
+    </a>
+</body>
+</html>
