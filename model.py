@@ -36,8 +36,38 @@ class Budget(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_creation = Column(DateTime, nullable=False, default=func.now())
     name = Column(String(50), nullable=False)
-    initial_amount = Column(Float, nullable=False, default=0)
-    actual_amount = Column(Float, nullable=False, default=0)
+    amount = Column(Float, nullable=False, default=0)
+
+class Account(Base):
+    __tablename__ = 'accounts'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date_creation = Column(DateTime, nullable=False, default=func.now())
+    name = Column(String(50), nullable=False)
+    amount = Column(Float, nullable=False, default=0)
+
+class Income(Base):
+    __tablename__ = 'incomes'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date_creation = Column(DateTime, nullable=False, default=func.now())
+    name = Column(String(50), nullable=False)
+
+class Categorie(Base):
+    __tablename__ = 'categories'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date_creation = Column(DateTime, nullable=False, default=func.now())
+    name = Column(String(50), nullable=False)
+
+class PlannedExpense(Base):
+    __tablename__ = 'planned_expenses'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    categorie = Column(String(50), nullable=False)
+    monthly_budget = Column(Float, nullable=False, default=0)
+    consumed_budget = Column(Float, nullable=False, default=0)
+    left_budget = Column(Float, nullable=False, default=0)
 
 # Create the tables in the database
 Base.metadata.create_all(engine)

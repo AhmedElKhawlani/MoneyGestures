@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy.orm import sessionmaker, scoped_session
 from datetime import datetime
 from model import Transaction, Budget, engine
+from utils.add_transaction import add_transaction
 import secrets
 import logging
 

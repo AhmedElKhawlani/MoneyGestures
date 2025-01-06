@@ -4,10 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budgets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+            color: aliceblue;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 7px;
+            text-align: center;
+        }
+
+        .link {
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            background-color: rgb(37, 36, 36);
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-color: aliceblue;
+            border: 2px solid aliceblue;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .link:hover {
+            background-color: #0056b3; 
+
+        }
+    </style>
 </head>
 <body>
     <h1>Budgets</h1>
-    <a href="{{ url_for('add_budget') }}">Add New Budget</a>
+    <a href="{{ url_for('add_budget') }}" class="link">Add New Budget</a>
     <table>
         <thead>
             <tr>

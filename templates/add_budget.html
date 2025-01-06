@@ -1,21 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Budget</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+            color: aliceblue;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .card {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), rgb(28, 28, 28));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid aliceblue;
+            border-radius: 15px;
+            padding: 50px 30px;
+            margin: 20px 130px;
+        }
+
+        label {
+            margin: 7px;
+        }
+
+        input {
+            border-radius: 7px;
+            border: #ffffff;
+            width: 70%;
+            height: 5vh;
+            overflow: auto;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            background-color: rgb(37, 36, 36);
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-color: aliceblue;
+            border: 2px solid aliceblue;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            margin: 20px auto;
+            background-color: rgb(37, 36, 36);
+            border: 2px solid aliceblue;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
+
 <body>
+    <a href="{{ url_for('budgets') }}">Back to Budgets</a>
     <h1>Add a New Budget</h1>
-    <form method="POST" action="{{ url_for('add_budget') }}">
+    <form method="POST" action="{{ url_for('add_budget') }}" class="card">
         <label for="name">Budget Name</label>
         <input type="text" name="name" required>
-        
+
         <label for="initial_amount">Initial Amount</label>
         <input type="number" step="0.01" name="initial_amount" required>
-        
+
         <button type="submit">Add Budget</button>
     </form>
-    <a href="{{ url_for('budgets') }}">Back to Budgets</a>
 </body>
+
 </html>

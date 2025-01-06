@@ -1,43 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+            color: aliceblue;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 5px;
+            text-align: center;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 15px;
+        }
+
+        table {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), rgb(28, 28, 28));
+            width: 80%;
+            height: 15vh;
+        }
+
+        .titles {
+            background-color: rgb(58, 82, 82);
+            border: #ffffff;
+        }
+
+
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            margin: 20px auto;
+            background-color: rgb(37, 36, 36);
+            border: 2px solid aliceblue;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
+
 <body>
     <h1>Transactions</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Date and Time</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Nature</th>
-                <th>Amount</th>
-                <th>Account</th>
-                <th>Budget</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr>
-                <td>{{ transaction.id }}</td>
-                <td>{{ transaction.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-                <td>{{ transaction.description }}</td>
-                <td>{{ transaction.category }}</td>
-                <td>{{ transaction.nature }}</td>
-                <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.account }}</td>
-                <td>{{ transaction.budget }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-container">
+
+        <table border="1">
+            <thead>
+                <tr class="titles">
+                    <th>ID</th>
+                    <th>Date and Time</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Nature</th>
+                    <th>Amount</th>
+                    <th>Account</th>
+                    <th>Budget</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.datetime.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.nature }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.account }}</td>
+                    <td>{{ transaction.budget }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <br>
     <a href="{{ url_for('add_transaction') }}">
         <button>Add New Transaction</button>
     </a>
 </body>
+
 </html>
