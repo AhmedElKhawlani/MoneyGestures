@@ -3,6 +3,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.sql import func
+from .add_account import add_account
+from .add_budget import add_budget
+from .add_category import add_category
+from .add_income import add_income
+from .add_planned_expense import add_planned_expense
 
 DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
 
@@ -36,7 +41,7 @@ class Budget(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_creation = Column(DateTime, nullable=False, default=func.now())
     name = Column(String(50), nullable=False)
-    amount = Column(Float, nullable=False, default=0)
+    balance = Column(Float, nullable=False, default=0)
 
 class Account(Base):
     __tablename__ = 'accounts'
@@ -44,7 +49,7 @@ class Account(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_creation = Column(DateTime, nullable=False, default=func.now())
     name = Column(String(50), nullable=False)
-    amount = Column(Float, nullable=False, default=0)
+    balance = Column(Float, nullable=False, default=0)
 
 class Income(Base):
     __tablename__ = 'incomes'
@@ -53,7 +58,7 @@ class Income(Base):
     date_creation = Column(DateTime, nullable=False, default=func.now())
     name = Column(String(50), nullable=False)
 
-class Categorie(Base):
+class Category(Base):
     __tablename__ = 'categories'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -64,7 +69,7 @@ class PlannedExpense(Base):
     __tablename__ = 'planned_expenses'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    categorie = Column(String(50), nullable=False)
+    category = Column(String(50), nullable=False)
     monthly_budget = Column(Float, nullable=False, default=0)
     consumed_budget = Column(Float, nullable=False, default=0)
     left_budget = Column(Float, nullable=False, default=0)
@@ -76,3 +81,23 @@ print("Tables created successfully!")
 # Set up the session
 Session = sessionmaker(bind=engine)
 session = Session()
+
+add_account(session, Account, "Bank")
+add_account(session, Account, "Cash")
+
+add_budget(session, Budget, "Planned Expense Budget")
+
+add_category(session, Category, "Food Expense")
+add_category(session, Category, "Home Expense")
+add_category(session, Category, "Health Expense")
+add_category(session, Category, "Car Expense")
+add_category(session, Category, "Bills")
+
+add_income(session, Income, "Salary")
+add_income(session, Income, "Other")
+
+add_planned_expense(session, Category, PlannedExpense, "Food Expense", 2000)
+add_planned_expense(session, Category, PlannedExpense, "Home Expense", 1000)
+add_planned_expense(session, Category, PlannedExpense, "Health Expense", 500)
+add_planned_expense(session, Category, PlannedExpense, "Car Expense", 500)
+add_planned_expense(session, Category, PlannedExpense, "Bills", 700)

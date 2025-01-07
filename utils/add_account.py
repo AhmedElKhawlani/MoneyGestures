@@ -1,7 +1,4 @@
-
-from model import Account, Session
-
-def add_account(name, initial_amount=0):
+def add_account(session, Account, name, initial_amount=0):
     """
     Adds an account to the database.
     
@@ -9,11 +6,17 @@ def add_account(name, initial_amount=0):
     :param initial_amount: Initial amount in the account
     :return: None
     """
-    session = Session()
+    # Check if the category already exists
+    
     try:
+        existing_account = session.query(Account).filter_by(name=name).first()
+        if existing_account:
+            print(f"Account '{name}' already exists.")
+            return
+        
         account = Account(
             name=name,
-            amount=initial_amount,
+            balance=initial_amount,
         )
         session.add(account)
         session.commit()

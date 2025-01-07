@@ -1,8 +1,5 @@
 
-from model import Budget, Session
-
-
-def add_budget(name, initial_amount=0):
+def add_budget(session, Budget, name, initial_amount=0):
     """
     Adds a budget to the database.
     
@@ -10,11 +7,14 @@ def add_budget(name, initial_amount=0):
     :param initial_amount: Initial amount of the budget
     :return: None
     """
-    session = Session()
     try:
+        existing_budget = session.query(Budget).filter_by(name=name).first()
+        if existing_budget:
+            print(f"Budget'{name}' already exists.")
+            return
         budget = Budget(
             name=name,
-            amount=initial_amount,
+            balance=initial_amount,
         )
         session.add(budget)
         session.commit()

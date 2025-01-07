@@ -1,16 +1,15 @@
-
-from model import Income, Session
-
-
-def add_income(name):
+def add_income(session, Income, name):
     """
     Adds an income source to the database.
     
     :param name: Name of the income source
     :return: None
     """
-    session = Session()
     try:
+        existing_income = session.query(Income).filter_by(name=name).first()
+        if existing_income:
+            print(f"Income '{name}' already exists.")
+            return
         income = Income(name=name)
         session.add(income)
         session.commit()
