@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Planned Expense</title>
+</head>
+<body>
+    <h1>Add Planned Expense</h1>
+    <form method="POST" action="{{ url_for('add_planned_expense') }}">
+        <label for="category">Select Category:</label>
+        <select id="category" name="category" required>
+            {% for category in categories %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add Planned Expense</button>
+    </form>
+    <a href="{{ url_for('show_planned_expenses') }}">Back to Planned Expenses</a>
+</body>
+</html>

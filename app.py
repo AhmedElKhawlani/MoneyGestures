@@ -333,6 +333,130 @@ def show_accounts():
         flash("An error occurred while loading accounts. Please try again later.", "danger")
         return redirect(url_for('show_accounts'))
 
+@app.route('/add_planned_expense', methods=['GET', 'POST'])
+def add_planned_expense():
+    try:
+        if request.method == 'GET':
+            # Fetch all categories
+            all_categories = Session.query(Category).all()
+            used_categories = Session.query(PlannedExpense.category).distinct().all()
+            used_category_names = {category[0] for category in used_categories}
+
+            # Filter unused categories
+            available_categories = [
+                category for category in all_categories if category.name not in used_category_names
+            ]
+
+            return render_template('add_planned_expense.html', categories=available_categories)
+
+        elif request.method == 'POST':
+            data = request.form
+
+            # Validate category selection
+            if 'category' not in data or not data['category'].strip():
+                flash("Category is required!", "danger")
+                return redirect(url_for('add_planned_expense'))
+
+            category_name = data['category'].strip()
+
+            # Add new planned expense
+            new_planned_expense = PlannedExpense(
+                category=category_name,
+                monthly_budget=0,
+                consumed_budget=0,
+                left_budget=0
+            )
+            Session.add(new_planned_expense)
+            Session.commit()
+
+            flash("Planned expense added successfully!", "success")
+            return redirect(url_for('show_planned_expenses'))
+
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error adding planned expense: %s", e)
+        flash("An error occurred while adding the planned expense. Please try again.", "danger")
+        return redirect(url_for('add_planned_expense'))
+
+@app.route('/add_category', methods=['GET', 'POST'])
+def add_category():
+    try:
+        if request.method == 'GET':
+            return render_template('add_category.html')
+
+        elif request.method == 'POST':
+            data = request.form
+
+            # Validate category name
+            if 'name' not in data or not data['name'].strip():
+                flash("Category name is required!", "danger")
+                return redirect(url_for('add_category'))
+
+            category_name = data['name'].strip()
+
+            # Check if category already exists
+            existing_category = Session.query(Category).filter_by(name=category_name).first()
+            if existing_category:
+                flash("Category already exists!", "danger")
+                return redirect(url_for('add_category'))
+
+            # Add new category
+            new_category = Category(name=category_name)
+            Session.add(new_category)
+            Session.commit()
+
+            flash("Category added successfully!", "success")
+            return redirect(url_for('add_category'))
+
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error adding category: %s", e)
+        flash("An error occurred while adding the category. Please try again.", "danger")
+        return redirect(url_for('add_category'))
+
+@app.route('/add_income', methods=['GET', 'POST'])
+def add_income():
+    try:
+        if request.method == 'GET':
+            return render_template('add_income.html')
+
+        elif request.method == 'POST':
+            data = request.form
+
+            # Validate the name field
+            if not data.get('name') or not data['name'].strip():
+                flash("Name is required!", "danger")
+                return redirect(url_for('add_income'))
+
+            # Add the income to the database
+            new_income = Income(
+                name=data['name'].strip()
+            )
+
+            Session.add(new_income)
+            Session.commit()
+
+            flash("Income added successfully!", "success")
+            return redirect(url_for('dashboard'))
+
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error adding income: %s", e)
+        flash("An error occurred while adding the income. Please try again.", "danger")
+        return redirect(url_for('add_income'))
+
+@app.route('/show_categories', methods=['GET'])
+def show_categories():
+    try:
+        # Fetch all categories from the database
+        categories = Session.query(Category).all()
+        return render_template('show_categories.html', categories=categories)
+    except Exception as e:
+        logging.error("Error fetching categories: %s", e)
+        flash("An error occurred while loading categories. Please try again.", "danger")
+        return redirect(url_for('dashboard'))
+
+
 @app.route('/')
 def dashboard():
     try:

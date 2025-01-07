@@ -9,7 +9,7 @@ from .add_category import add_category
 from .add_income import add_income
 from .add_planned_expense import add_planned_expense
 
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
+DATABASE_URL = 'mysql+pymysql://ahmedandamin:ahmedandamin@localhost/money_management'
 
 populate = False
 # Check if the database exists, and create it if not
