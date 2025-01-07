@@ -1,13 +1,6 @@
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from ..model import Income  # Import the Income model
 
-# Database connection URL
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
+from model import Income, Session
 
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
 
 def add_income(name):
     """
@@ -25,5 +18,3 @@ def add_income(name):
     except Exception as e:
         session.rollback()
         print(f"Failed to add income source: {e}")
-    finally:
-        session.close()

@@ -1,8 +1,8 @@
-from .add_account import add_account
-from .add_budget import add_budget
-from .add_category import add_category
-from .add_income import add_income
-from .add_planned_expense import add_planned_expense
+from add_account import add_account
+from add_budget import add_budget
+from add_category import add_category
+from add_income import add_income
+from add_planned_expense import add_planned_expense
 
 def initialise_db():
     add_account("Bank")

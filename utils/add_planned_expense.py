@@ -1,14 +1,6 @@
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
-from ..model import PlannedExpense, Categorie
+from model import PlannedExpense, Categorie, Session
 
-# Database connection URL
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
-
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
 
 def add_planned_expense(categorie_name, monthly_budget):
     """
@@ -42,5 +34,3 @@ def add_planned_expense(categorie_name, monthly_budget):
     except Exception as e:
         session.rollback()
         print(f"Failed to add planned expense: {e}")
-    finally:
-        session.close()

@@ -1,13 +1,5 @@
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from ..model import Transaction  # Ensure models are in the same directory or adjust import accordingly
 
-# Database connection URL
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
-
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
+from model import Transaction, Session
 
 def add_transaction(description, category, nature, amount, account, budget):
     """
@@ -39,5 +31,3 @@ def add_transaction(description, category, nature, amount, account, budget):
     except Exception as e:
         session.rollback()
         print(f"Failed to add transaction: {e}")
-    finally:
-        session.close()

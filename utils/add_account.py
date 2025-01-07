@@ -1,13 +1,5 @@
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from ..model import Account
 
-# Database connection URL
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
-
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
+from model import Account, Session
 
 def add_account(name, initial_amount=0):
     """
@@ -29,5 +21,4 @@ def add_account(name, initial_amount=0):
     except Exception as e:
         session.rollback()
         print(f"Failed to add account: {e}")
-    finally:
-        session.close()
+    

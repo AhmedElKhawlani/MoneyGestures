@@ -1,13 +1,6 @@
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from ..model import Budget
 
-# Database connection URL
-DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
+from model import Budget, Session
 
-# Set up the engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
 
 def add_budget(name, initial_amount=0):
     """
@@ -29,5 +22,3 @@ def add_budget(name, initial_amount=0):
     except Exception as e:
         session.rollback()
         print(f"Failed to add budget: {e}")
-    finally:
-        session.close()
