@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.sql import func
+from utils.initialise_db import initialise_db
 
 DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
 

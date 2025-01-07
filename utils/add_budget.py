@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from ..model import Budget  # Import the Budget model
+from ..model import Budget
 
 # Database connection URL
 DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'

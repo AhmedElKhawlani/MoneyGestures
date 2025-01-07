@@ -1,9 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-import sys
-sys.path.append("..")  # Adjust path to the parent directory
-
-from model import Account  # Import the Account model
+from ..model import Account
 
 # Database connection URL
 DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
