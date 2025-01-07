@@ -11,8 +11,10 @@ from .add_planned_expense import add_planned_expense
 
 DATABASE_URL = 'mysql+pymysql://root:12040412@localhost/money_management'
 
+populate = False
 # Check if the database exists, and create it if not
 if not database_exists(DATABASE_URL):
+    populate = True
     create_database(DATABASE_URL)
     print(f"Database 'money_management' created successfully!")
 
@@ -74,30 +76,32 @@ class PlannedExpense(Base):
     consumed_budget = Column(Float, nullable=False, default=0)
     left_budget = Column(Float, nullable=False, default=0)
 
-# Create the tables in the database
-Base.metadata.create_all(engine)
-print("Tables created successfully!")
+
 
 # Set up the session
 Session = sessionmaker(bind=engine)
 session = Session()
 
-add_account(session, Account, "Bank")
-add_account(session, Account, "Cash")
+if populate:
+    Base.metadata.create_all(engine)
+    print("Tables created successfully!")
 
-add_budget(session, Budget, "Planned Expense Budget")
+    add_account(session, Account, "Bank")
+    add_account(session, Account, "Cash")
 
-add_category(session, Category, "Food Expense")
-add_category(session, Category, "Home Expense")
-add_category(session, Category, "Health Expense")
-add_category(session, Category, "Car Expense")
-add_category(session, Category, "Bills")
+    add_budget(session, Budget, "Planned Expense Budget")
 
-add_income(session, Income, "Salary")
-add_income(session, Income, "Other")
+    add_category(session, Category, "Food Expense")
+    add_category(session, Category, "Home Expense")
+    add_category(session, Category, "Health Expense")
+    add_category(session, Category, "Car Expense")
+    add_category(session, Category, "Bills")
 
-add_planned_expense(session, Category, PlannedExpense, "Food Expense", 2000)
-add_planned_expense(session, Category, PlannedExpense, "Home Expense", 1000)
-add_planned_expense(session, Category, PlannedExpense, "Health Expense", 500)
-add_planned_expense(session, Category, PlannedExpense, "Car Expense", 500)
-add_planned_expense(session, Category, PlannedExpense, "Bills", 700)
+    add_income(session, Income, "Salary")
+    add_income(session, Income, "Other")
+
+    add_planned_expense(session, Category, PlannedExpense, "Food Expense", 2000)
+    add_planned_expense(session, Category, PlannedExpense, "Home Expense", 1000)
+    add_planned_expense(session, Category, PlannedExpense, "Health Expense", 500)
+    add_planned_expense(session, Category, PlannedExpense, "Car Expense", 500)
+    add_planned_expense(session, Category, PlannedExpense, "Bills", 700)

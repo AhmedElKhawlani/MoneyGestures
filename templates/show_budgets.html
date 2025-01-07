@@ -17,12 +17,42 @@
             min-height: 100vh;
         }
 
+        .bar {
+            background: rgb(37, 36, 36);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
         h1 {
             margin-top: 7px;
             text-align: center;
         }
 
-        .link {
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 15px;
+        }
+
+        table {
+            background: linear-gradient(to bottom, rgb(37, 36, 36), rgb(28, 28, 28));
+            width: 80%;
+            height: 15vh;
+        }
+
+        .titles {
+            background-color: rgb(58, 82, 82);
+            border: #ffffff;
+        }
+
+
+        /* .link {
             text-decoration: none;
             display: inline-block;
             text-align: center;
@@ -40,29 +70,61 @@
         .link:hover {
             background-color: #0056b3; 
 
+        } */
+
+        a {
+            background-color: rgb(37, 36, 36);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: rgb(80, 80, 80);
         }
     </style>
 </head>
 <body>
+    <div class="bar">
+        <a href="/">Home</a>
+        <a href="/add_account">Add Account</a>
+        <a href="/add_budget">Add Budget</a>
+        <a href="/record_income">Record Income</a>
+        <a href="/record_planned_expense">Record Planned Expense</a>
+        <a href="/record_unplanned_expense">Record Unplanned Expense</a>
+        <a href="/show_accounts">Show Accounts</a>
+        <a href="/show_planned_expenses">Show Planned Expenses</a>
+        <a href="/show_transactions">Show Transactions</a>
+    </div>
+
     <h1>Budgets</h1>
-    <a href="{{ url_for('add_budget') }}" class="link">Add New Budget</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Balance</th>
-                <th>Date Created</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for budget in budgets %}
-            <tr>
-                <td>{{ budget.name }}</td>
-                <td>{{ budget.balance }}</td>
-                <td>{{ budget.date_creation }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- <a href="{{ url_for('add_budget') }}" class="link">Add New Budget</a> -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr class="titles">
+                    <th>Name</th>
+                    <th>Balance</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                <tr>
+                    <td>{{ budget.name }}</td>
+                    <td>{{ budget.balance }}</td>
+                    <td>{{ budget.date_creation }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 </body>
 </html>

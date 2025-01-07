@@ -21,6 +21,17 @@
             min-height: 100vh;
         }
 
+        .bar {
+            background: rgb(37, 36, 36);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
         .button-container {
             display: flex;
             justify-content: center;
@@ -51,10 +62,21 @@
             border: #ffffff;
         }
 
-
-
         a {
+            background-color: rgb(37, 36, 36);
             text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: rgb(80, 80, 80);
         }
 
         button {
@@ -77,9 +99,21 @@
 </head>
 
 <body>
+
+    <div class="bar">
+        <a href="/">Home</a>
+        <a href="/add_account">Add Account</a>
+        <a href="/add_budget">Add Budget</a>
+        <a href="/record_income">Record Income</a>
+        <a href="/record_planned_expense">Record Planned Expense</a>
+        <a href="/record_unplanned_expense">Record Unplanned Expense</a>
+        <a href="/show_accounts">Show Accounts</a>
+        <a href="/show_budgets">Show Budgets</a>
+        <a href="/show_planned_expenses">Show Planned Expenses</a>
+    </div>
     <h1>Transactions History</h1>
 
-    <div class="button-container">
+    <!-- <div class="button-container">
         <a href="{{ url_for('record_planned_expense') }}">
             <button>Record Planned Expense</button>
         </a>
@@ -89,7 +123,7 @@
         <a href="{{ url_for('record_income') }}">
             <button>Record Income</button>
         </a>
-    </div>
+    </div> -->
 
     <div class="table-container">
 
@@ -123,17 +157,17 @@
         </table>
     </div>
     <br>
-    <div class="button-container">
-        <a href="{{ url_for('record_planned_expense') }}">
-            <button>Record Planned Expense</button>
-        </a>
-        <a href="{{ url_for('record_unplanned_expense') }}">
-            <button>Record Unplanned Expense</button>
-        </a>
-        <a href="{{ url_for('record_income') }}">
-            <button>Record Income</button>
-        </a>
-    </div>
+        <!-- <div class="button-container">
+            <a href="{{ url_for('record_planned_expense') }}">
+                <button>Record Planned Expense</button>
+            </a>
+            <a href="{{ url_for('record_unplanned_expense') }}">
+                <button>Record Unplanned Expense</button>
+            </a>
+            <a href="{{ url_for('record_income') }}">
+                <button>Record Income</button>
+            </a>
+        </div> -->
 </body>
 
 </html> 

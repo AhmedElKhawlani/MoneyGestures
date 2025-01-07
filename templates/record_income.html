@@ -18,6 +18,17 @@
             min-height: 100vh;
         }
 
+        .bar {
+            background: rgb(37, 36, 36);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
         h1 {
             margin: 5px;
             text-align: center;
@@ -29,13 +40,22 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 5px solid aliceblue;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
             border-radius: 15px;
             padding: 50px 30px;
             margin: 20px 130px;
         }
 
         input {
+            border-radius: 7px;
+            border: #ffffff;
+            width: 70%;
+            height: 5vh;
+            overflow: auto;
+            text-align: center;
+        }
+
+        select {
             border-radius: 7px;
             border: #ffffff;
             width: 70%;
@@ -71,14 +91,12 @@
         }
 
         a {
+            background-color: rgb(37, 36, 36);
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            background-color: rgb(37, 36, 36);
             padding: 10px 20px;
             margin: 20px 10px;
-            border-color: aliceblue;
-            border: 2px solid aliceblue;
             border-radius: 5px;
             color: aliceblue;
             cursor: pointer;
@@ -86,11 +104,23 @@
         }
 
         a:hover {
-            background-color: #0056b3;
+            background-color: rgb(80, 80, 80);
         }
+
     </style>
 </head>
 <body>
+    <div class="bar">
+        <a href="/">Home</a>
+        <a href="/add_account">Add Account</a>
+        <a href="/add_budget">Add Budget</a>
+        <a href="/record_planned_expense">Record Planned Expense</a>
+        <a href="/record_unplanned_expense">Record Unplanned Expense</a>
+        <a href="/show_accounts">Show Accounts</a>
+        <a href="/show_budgets">Show Budgets</a>
+        <a href="/show_planned_expenses">Show Planned Expenses</a>
+        <a href="/show_transactions">Show Transactions</a>
+    </div>
     <h1>Record Income</h1>
     <form action="/record_income" method="POST" class="card">
         

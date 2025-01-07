@@ -5,13 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
             color: aliceblue;
-            margin: 0;
-            padding: 20px;
+            min-height: 100vh;
         }
+
+        .bar {
+            background: rgb(37, 36, 36);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
@@ -24,7 +40,11 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-            margin: 10px 0;
+            margin: 10px 20px;
+        }
+
+        .titles {
+            margin: 10px 20px;
         }
         .card h2 {
             margin: 0;
@@ -41,13 +61,41 @@
             flex: 1;
             min-width: 200px;
         }
+
+        a {
+            background-color: rgb(37, 36, 36);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: rgb(80, 80, 80);
+        }
     </style>
 </head>
 <body>
+    <div class="bar">
+        <a href="/add_account">Add Account</a>
+        <a href="/add_budget">Add Budget</a>
+        <a href="/record_income">Record Income</a>
+        <a href="/record_planned_expense">Record Planned Expense</a>
+        <a href="/record_unplanned_expense">Record Unplanned Expense</a>
+        <a href="/show_accounts">Show Accounts</a>
+        <a href="/show_budgets">Show Budgets</a>
+        <a href="/show_planned_expenses">Show Planned Expenses</a>
+        <a href="/show_transactions">Show Transactions</a>
+    </div>
     <h1>Dashboard</h1>
 
     <div class="section">
-        <h2>Accounts</h2>
+        <h2 class="titles">Accounts</h2>
         <div class="grid">
             {% for account in accounts %}
             <div class="card">
@@ -59,7 +107,7 @@
     </div>
 
     <div class="section">
-        <h2>Budgets</h2>
+        <h2 class="titles">Budgets</h2>
         <div class="grid">
             {% for budget in budgets %}
             <div class="card">
@@ -71,7 +119,7 @@
     </div>
 
     <div class="section">
-        <h2>Summary</h2>
+        <h2 class="titles">Summary</h2>
         <div class="card">
             <p>Total Expenses (This Month): {{ total_expenses }}</p>
             <p>Total Incomes (This Month): {{ total_incomes }}</p>
