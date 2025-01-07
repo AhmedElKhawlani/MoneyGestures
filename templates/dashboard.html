@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+            color: aliceblue;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .card {
+            background: rgb(37, 36, 36);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            margin: 10px 0;
+        }
+        .card h2 {
+            margin: 0;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .grid .card {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <div class="section">
+        <h2>Accounts</h2>
+        <div class="grid">
+            {% for account in accounts %}
+            <div class="card">
+                <h2>{{ account.name }}</h2>
+                <p>Balance: {{ account.balance }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Budgets</h2>
+        <div class="grid">
+            {% for budget in budgets %}
+            <div class="card">
+                <h2>{{ budget.name }}</h2>
+                <p>Balance: {{ budget.balance }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Summary</h2>
+        <div class="card">
+            <p>Total Expenses (This Month): {{ total_expenses }}</p>
+            <p>Total Incomes (This Month): {{ total_incomes }}</p>
+        </div>
+    </div>
+</body>
+</html>

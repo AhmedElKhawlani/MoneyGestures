@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budgets</title>
+    <title>Accounts</title>
     <style>
         * {
             margin: 0;
@@ -44,24 +44,22 @@
     </style>
 </head>
 <body>
-    <h1>Budgets</h1>
-    <a href="{{ url_for('add_budget') }}" class="link">Add New Budget</a>
+    <h1>Accounts</h1>
+    <a href="{{ url_for('add_account') }}" class="link">Add New Account</a>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Initial Amount</th>
-                <th>Actual Amount</th>
+                <th>Balance</th>
                 <th>Date Created</th>
             </tr>
         </thead>
         <tbody>
-            {% for budget in budgets %}
+            {% for account in accounts %}
             <tr>
-                <td>{{ budget.name }}</td>
-                <td>{{ budget.initial_amount }}</td>
-                <td>{{ budget.actual_amount }}</td>
-                <td>{{ budget.date_creation }}</td>
+                <td>{{ account.name }}</td>
+                <td>{{ account.balance }}</td>
+                <td>{{ account.date_creation }}</td>
             </tr>
             {% endfor %}
         </tbody>

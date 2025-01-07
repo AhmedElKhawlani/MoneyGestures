@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Budget</title>
+    <title>Add Account</title>
 
     <style>
         * {
@@ -88,13 +88,13 @@
 </head>
 
 <body>
-    <a href="{{ url_for('show_budgets') }}">Show Budgets</a>
-    <h1>Add a New Budget</h1>
-    <form method="POST" action="{{ url_for('add_budget') }}" class="card">
-        <label for="name">Budget Name</label>
+    <a href="{{ url_for('show_accounts') }}">Show Accounts</a>
+    <h1>Add a New Account</h1>
+    <form method="POST" action="{{ url_for('add_account') }}" class="card">
+        <label for="name">Account Name</label>
         <input type="text" name="name" required>
 
-        <button type="submit">Add Budget</button>
+        <button type="submit">Add Account</button>
     </form>
 </body>
 

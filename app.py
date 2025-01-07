@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.sql import func
 from datetime import datetime
 from utils.model import Transaction, Budget, Account, PlannedExpense, Category, Income, engine
 import secrets
@@ -18,15 +19,15 @@ Session = scoped_session(sessionmaker(bind=engine))
 def shutdown_session(exception=None):
     Session.remove()
 
-@app.route('/transactions', methods=['GET'])
-def transactions():
+@app.route('/show_transactions', methods=['GET'])
+def show_transactions():
     try:
         transactions = Session.query(Transaction).all()
-        return render_template('transactions.html', transactions=transactions)
+        return render_template('show_transactions.html', transactions=transactions)
     except Exception as e:
         logging.error("Error fetching transactions: %s", e)
         flash("An error occurred while loading transactions. Please try again later.", "danger")
-        return redirect(url_for('transactions'))
+        return redirect(url_for('show_transactions'))
 
 @app.route('/record_unplanned_expense', methods=['GET', 'POST'])
 def record_unplanned_expense():
@@ -96,7 +97,7 @@ def record_unplanned_expense():
             Session.rollback()
             logging.error("Error adding transaction: %s", e)
             flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for('transactions'))
+        return redirect(url_for('show_transactions'))
     return render_template('record_unplanned_expense.html', categories=category_list, budgets=budget_list, accounts=account_list)
 
 
@@ -160,7 +161,7 @@ def record_income():
             Session.rollback()
             logging.error("Error adding transaction: %s", e)
             flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for('transactions'))
+        return redirect(url_for('show_transactions'))
     return render_template('record_income.html', budgets=budget_list, accounts=account_list, incomes=income_list)
 
 @app.route('/show_planned_expenses', methods=['GET'])
@@ -177,8 +178,6 @@ def show_planned_expenses():
 def record_planned_expense():
     categories = Session.query(PlannedExpense.category).distinct().all()
     category_list = [category[0] for category in categories]
-    budgets = Session.query(Budget.name).distinct().all()
-    budget_list = [budget[0] for budget in budgets]
     accounts = Session.query(Account.name).distinct().all()
     account_list = [account[0] for account in accounts]
     if request.method == 'POST':
@@ -186,7 +185,7 @@ def record_planned_expense():
             data = request.form
             print(f"Form data received: {data}")
             # Validate form data
-            required_fields = ['description', 'category', 'amount', 'account', 'budget']
+            required_fields = ['description', 'category', 'amount', 'account']
             print(data)
             for field in required_fields:
                 if (not field in data) or (not data[field].strip()):
@@ -206,7 +205,7 @@ def record_planned_expense():
                     print(f"The amount exceeds the remaining budget for category '{category_name}'.", "danger")
                     return redirect(url_for('record_planned_expense'))
                 
-                budget_name = data['budget'].strip()
+                budget_name = "Planned Expense Budget"
                 budget = Session.query(Budget).filter_by(name=budget_name).first()
                 if amount > budget.balance:
                     flash(f"The amount exceeds the available budget '{budget_name}'.", "danger")
@@ -240,7 +239,7 @@ def record_planned_expense():
                 nature="Planned Expense",
                 amount=amount,
                 account=data['account'].strip(),
-                budget=data['budget'].strip()
+                budget="Planned Expense Budget"
             )
 
             Session.add(transaction)
@@ -250,19 +249,19 @@ def record_planned_expense():
             Session.rollback()
             logging.error("Error adding transaction: %s", e)
             flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for('transactions'))
-    return render_template('record_planned_expense.html', categories=category_list, budgets=budget_list, accounts=account_list)
+        return redirect(url_for('show_transactions'))
+    return render_template('record_planned_expense.html', categories=category_list, accounts=account_list)
 
 
-@app.route('/budgets', methods=['GET'])
-def budgets():
+@app.route('/show_budgets', methods=['GET'])
+def show_budgets():
     try:
         budgets = Session.query(Budget).all()
-        return render_template('budgets.html', budgets=budgets)
+        return render_template('show_budgets.html', budgets=budgets)
     except Exception as e:
         logging.error("Error fetching budgets: %s", e)
         flash("An error occurred while loading budgets. Please try again later.", "danger")
-        return redirect(url_for('budgets'))
+        return redirect(url_for('show_budgets'))
 
 @app.route('/add_budget', methods=['GET', 'POST'])
 def add_budget():
@@ -272,24 +271,16 @@ def add_budget():
             print(f"Form data received: {data}")
 
             # Validate form data
-            required_fields = ['name', 'initial_amount']
+            required_fields = ['name']
             for field in required_fields:
                 if not data.get(field) or not data[field].strip():
                     flash("All fields are required!", "danger")
                     return redirect(url_for('add_budget'))
 
-            # Parse and validate specific fields
-            try:
-                initial_amount = float(data['initial_amount'])
-            except ValueError:
-                flash("Invalid amount format!", "danger")
-                return redirect(url_for('add_budget'))
-
             # Add the budget
             budget = Budget(
                 name=data['name'].strip(),
-                initial_amount=initial_amount,
-                actual_amount=0  # Default value for actual_amount
+                balance=0 
             )
 
             Session.add(budget)
@@ -301,6 +292,81 @@ def add_budget():
             flash(f"Error: {str(e)}", "danger")
         return redirect(url_for('budgets'))
     return render_template('add_budget.html')
+
+@app.route('/add_account', methods=['GET', 'POST'])
+def add_account():
+    if request.method == 'POST':
+        try:
+            data = request.form
+            print(f"Form data received: {data}")
+
+            # Validate form data
+            required_fields = ['name']
+            for field in required_fields:
+                if not data.get(field) or not data[field].strip():
+                    flash("All fields are required!", "danger")
+                    return redirect(url_for('add_account'))
+
+            # Add the budget
+            account = Account(
+                name=data['name'].strip(),
+                balance=0 
+            )
+
+            Session.add(account)
+            Session.commit()
+            flash("Account added successfully!", "success")
+        except Exception as e:
+            Session.rollback()
+            logging.error("Error adding budget: %s", e)
+            flash(f"Error: {str(e)}", "danger")
+        return redirect(url_for('accounts'))
+    return render_template('add_account.html')
+
+@app.route('/show_accounts', methods=['GET'])
+def show_accounts():
+    try:
+        accounts = Session.query(Account).all()
+        return render_template('show_accounts.html', accounts=accounts)
+    except Exception as e:
+        logging.error("Error fetching accounts: %s", e)
+        flash("An error occurred while loading accounts. Please try again later.", "danger")
+        return redirect(url_for('show_accounts'))
+
+@app.route('/')
+def dashboard():
+    try:
+        # Fetch accounts and their balances
+        accounts = Session.query(Account).all()
+
+        # Fetch budgets and their balances
+        budgets = Session.query(Budget).all()
+
+        # Calculate sum of expenses (planned and unplanned) for the current month
+        current_month_start = datetime(datetime.now().year, datetime.now().month, 1)
+        total_expenses = Session.query(Transaction).filter(
+            Transaction.nature.in_(["Planned Expense", "Unplanned Expense"]),
+            Transaction.datetime >= current_month_start
+        ).with_entities(func.sum(Transaction.amount)).scalar() or 0
+
+        # Calculate sum of incomes for the current month
+        total_incomes = Session.query(Transaction).filter(
+            Transaction.nature == "Income",
+            Transaction.datetime >= current_month_start
+        ).with_entities(func.sum(Transaction.amount)).scalar() or 0
+
+        return render_template(
+            'dashboard.html',
+            accounts=accounts,
+            budgets=budgets,
+            total_expenses=total_expenses,
+            total_incomes=total_incomes
+        )
+    except Exception as e:
+        logging.error("Error loading dashboard: %s", e)
+        flash("An error occurred while loading the dashboard. Please try again later.", "danger")
+        return redirect(url_for('show_transactions'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

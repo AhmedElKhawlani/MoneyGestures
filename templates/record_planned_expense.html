@@ -114,13 +114,6 @@
             <option value="{{ account }}">{{ account }}</option>
             {% endfor %}
         </select><br><br>
-
-        <label for="budget">Budget:</label><br>
-        <select id="budget" name="budget" required>
-            {% for budget in budgets %}
-            <option value="{{ budget }}">{{ budget }}</option>
-            {% endfor %}
-        </select><br><br>
         
         <button type="submit">Record Planned Expense</button>
     </form>
