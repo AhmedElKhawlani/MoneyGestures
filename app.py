@@ -276,10 +276,18 @@ def add_budget():
                 if not data.get(field) or not data[field].strip():
                     flash("All fields are required!", "danger")
                     return redirect(url_for('add_budget'))
+                
+            budget_name = data['name'].strip()
 
+            # Check if the budget already exists
+            existing_budget = Session.query(Budget).filter_by(name=budget_name).first()
+            if existing_budget:
+                flash(f"A budget with the name '{budget_name}' already exists!", "danger")
+                return redirect(url_for('add_budget'))
+            
             # Add the budget
             budget = Budget(
-                name=data['name'].strip(),
+                name=budget_name,
                 balance=0 
             )
 
@@ -290,7 +298,7 @@ def add_budget():
             Session.rollback()
             logging.error("Error adding budget: %s", e)
             flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for('budgets'))
+        return redirect(url_for('show_budgets'))
     return render_template('add_budget.html')
 
 @app.route('/add_account', methods=['GET', 'POST'])
@@ -306,10 +314,17 @@ def add_account():
                 if not data.get(field) or not data[field].strip():
                     flash("All fields are required!", "danger")
                     return redirect(url_for('add_account'))
-
+            
+            account_name = data['name'].strip()
+            # Check if the account already exists
+            existing_account = Session.query(Account).filter_by(name=account_name).first()
+            if existing_account:
+                flash(f"An account with the name '{account_name}' already exists!", "danger")
+                return redirect(url_for('add_account'))
+            
             # Add the budget
             account = Account(
-                name=data['name'].strip(),
+                name=account_name,
                 balance=0 
             )
 
@@ -320,7 +335,7 @@ def add_account():
             Session.rollback()
             logging.error("Error adding budget: %s", e)
             flash(f"Error: {str(e)}", "danger")
-        return redirect(url_for('accounts'))
+        return redirect(url_for('show_accounts'))
     return render_template('add_account.html')
 
 @app.route('/show_accounts', methods=['GET'])
@@ -456,6 +471,36 @@ def show_categories():
         flash("An error occurred while loading categories. Please try again.", "danger")
         return redirect(url_for('dashboard'))
 
+@app.route('/show_incomes', methods=['GET'])
+def show_incomes():
+    try:
+        # Fetch all incomes from the database
+        incomes = Session.query(Income).all()
+        return render_template('show_incomes.html', incomes=incomes)
+    except Exception as e:
+        logging.error("Error fetching incomes: %s", e)
+        flash("An error occurred while loading incomes. Please try again.", "danger")
+        return redirect(url_for('dashboard'))
+
+@app.route('/delete_income/<int:income_id>', methods=['POST'])
+def delete_income(income_id):
+    try:
+        income = Session.query(Income).filter_by(id=income_id).first()
+        if not income:
+            flash("Income not found!", "danger")
+            return redirect(url_for('dashboard'))
+
+        Session.delete(income)
+        Session.commit()
+
+        flash("Income deleted successfully!", "success")
+        return redirect(url_for('dashboard'))
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error deleting income: %s", e)
+        flash("An error occurred while deleting the income. Please try again.", "danger")
+        return redirect(url_for('dashboard'))
+
 
 @app.route('/')
 def dashboard():
@@ -490,6 +535,137 @@ def dashboard():
         logging.error("Error loading dashboard: %s", e)
         flash("An error occurred while loading the dashboard. Please try again later.", "danger")
         return redirect(url_for('show_transactions'))
+
+@app.route('/delete_planned_expense/<int:expense_id>', methods=['POST'])
+def delete_planned_expense(expense_id):
+    try:
+        planned_expense = Session.query(PlannedExpense).filter_by(id=expense_id).first()
+        if not planned_expense:
+            flash("Planned expense not found!", "danger")
+            return redirect(url_for('show_planned_expenses'))
+
+        # Check if the left_budget is 0
+        if planned_expense.left_budget != 0:
+            flash("Cannot delete planned expense as its left budget is not 0!", "danger")
+            print("Cannot delete planned expense as its left budget is not 0!", "danger")
+            return redirect(url_for('show_planned_expenses'))
+
+        Session.delete(planned_expense)
+        Session.commit()
+
+        flash("Planned expense deleted successfully!", "success")
+        return redirect(url_for('show_planned_expenses'))
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error deleting planned expense: %s", e)
+        flash("An error occurred while deleting the planned expense. Please try again.", "danger")
+        return redirect(url_for('show_planned_expenses'))
+
+@app.route('/delete_category/<int:category_id>', methods=['POST'])
+def delete_category(category_id):
+    try:
+        category = Session.query(Category).filter_by(id=category_id).first()
+        if not category:
+            flash("Category not found!", "danger")
+            return redirect(url_for('show_categories'))
+
+        # Check if the category is used by any planned expense
+        if Session.query(PlannedExpense).filter_by(category=category.name).count() > 0:
+            flash("Cannot delete category as it is used by a planned expense!", "danger")
+            print("Cannot delete category as it is used by a planned expense!", "danger")
+            return redirect(url_for('show_categories'))
+
+        Session.delete(category)
+        Session.commit()
+
+        flash("Category deleted successfully!", "success")
+        return redirect(url_for('show_categories'))
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error deleting category: %s", e)
+        flash("An error occurred while deleting the category. Please try again.", "danger")
+        return redirect(url_for('show_categories'))
+
+@app.route('/delete_budget/<int:budget_id>', methods=['POST'])
+def delete_budget(budget_id):
+    try:
+        budget = Session.query(Budget).filter_by(id=budget_id).first()
+        if not budget:
+            flash("Budget not found!", "danger")
+            return redirect(url_for('show_budgets'))
+
+        # Check if the budget balance is 0
+        if budget.balance != 0:
+            flash("Cannot delete budget as its balance is not 0!", "danger")
+            return redirect(url_for('show_budgets'))
+
+        Session.delete(budget)
+        Session.commit()
+
+        flash("Budget deleted successfully!", "success")
+        return redirect(url_for('show_budgets'))
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error deleting budget: %s", e)
+        flash("An error occurred while deleting the budget. Please try again.", "danger")
+        return redirect(url_for('show_budgets'))
+
+@app.route('/delete_account/<int:account_id>', methods=['POST'])
+def delete_account(account_id):
+    try:
+        account = Session.query(Account).filter_by(id=account_id).first()
+        if not account:
+            flash("Account not found!", "danger")
+            return redirect(url_for('show_accounts'))
+
+        # Check if the account balance is 0
+        if account.balance != 0:
+            flash("Cannot delete account as its balance is not 0!", "danger")
+            return redirect(url_for('show_accounts'))
+
+        Session.delete(account)
+        Session.commit()
+
+        flash("Account deleted successfully!", "success")
+        return redirect(url_for('show_accounts'))
+    except Exception as e:
+        Session.rollback()
+        logging.error("Error deleting account: %s", e)
+        flash("An error occurred while deleting the account. Please try again.", "danger")
+        return redirect(url_for('show_accounts'))
+
+@app.route('/edit_planned_expenses', methods=['GET', 'POST'])
+def edit_planned_expenses():
+    if request.method == 'GET':
+        # Fetch all planned expenses
+        planned_expenses = Session.query(PlannedExpense).all()
+        return render_template('edit_planned_expenses.html', planned_expenses=planned_expenses)
+
+    elif request.method == 'POST':
+        try:
+            data = request.form
+            print(f"Form data received: {data}")
+
+            # Update each planned expense
+            for expense in Session.query(PlannedExpense).all():
+                # Get the new monthly budget value from the form
+                new_monthly_budget_key = f"monthly_budget_{expense.id}"
+                if new_monthly_budget_key in data:
+                    new_monthly_budget = float(data[new_monthly_budget_key])
+
+                    # Update the expense fields
+                    expense.monthly_budget = new_monthly_budget
+                    expense.consumed_budget = 0
+                    expense.left_budget = new_monthly_budget
+
+            # Commit the changes
+            Session.commit()
+            flash("Planned expenses updated successfully!", "success")
+        except Exception as e:
+            Session.rollback()
+            logging.error("Error updating planned expenses: %s", e)
+            flash(f"Error: {str(e)}", "danger")
+        return redirect(url_for('edit_planned_expenses'))
 
 
 if __name__ == '__main__':

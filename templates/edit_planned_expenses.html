@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Planned Expenses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+            color: aliceblue;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: rgb(37, 36, 36);
+        }
+
+        table, th, td {
+            border: 1px solid #ffffff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: rgb(58, 82, 82);
+        }
+
+        input[type="number"] {
+            width: 80%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: rgb(37, 36, 36);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        a:hover {
+            background-color: rgb(80, 80, 80);
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Planned Expenses</h1>
+    <form method="POST" action="{{ url_for('edit_planned_expenses') }}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Monthly Budget</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in planned_expenses %}
+                <tr>
+                    <td>{{ expense.id }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>
+                        <input type="number" name="monthly_budget_{{ expense.id }}" value="{{ expense.monthly_budget }}" required>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save Changes</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
