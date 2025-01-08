@@ -5,34 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounts</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+         * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
-            color: aliceblue;
-            min-height: 100vh;
-        }
+html, body {
+    height: 100%;
+    overflow: hidden; 
+}
 
-        .bar {
-            background: rgb(37, 36, 36);
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
-        }
 
-        h1 {
-            margin-top: 7px;
-            text-align: center;
-        }
+body {
+    background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+    color: aliceblue;
+    min-height: 100vh;
+    display: flex; 
+    flex-direction: row;
+}
 
+.bar {
+    background: rgb(37, 36, 36);
+    width: 20%; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 5px;
+}
+
+.main-content {
+    width: 80%; 
+    display: flex;
+    flex-direction: column; 
+    padding: 20px;
+    gap: 20px; 
+    height: 100%;
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+
+
+.bar-titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    width: 100%;
+    margin: 5px;
+}
+
+.bar-titles:hover {
+    background-color: #2C3539;
+}
+
+.expenses {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    width: 100%;
+    margin: 5px;
+}
+
+.expenses:hover {
+    background-color: gray;
+}
+
+
+
+h1 {
+    color: #D4AF37;
+    margin: 0 0 20px; 
+    text-align: center;
+    font-size: 2rem;
+}
         .table-container {
             display: flex;
             justify-content: center;
@@ -95,45 +153,80 @@
 </head>
 <body>
     <div class="bar">
-        <a href="/">Home</a>
-        <a href="/add_account">Add Account</a>
-        <a href="/add_budget">Add Budget</a>
-        <a href="/record_income">Record Income</a>
-        <a href="/record_planned_expense">Record Planned Expense</a>
-        <a href="/record_unplanned_expense">Record Unplanned Expense</a>
-        <a href="/show_budgets">Show Budgets</a>
-        <a href="/show_planned_expenses">Show Planned Expenses</a>
-        <a href="/show_transactions">Show Transactions</a>
-    </div>
+        <div class="bar-titles">
+            <a href="/"><h2>Home</h2></a>
+        </div>
+        <div class="bar-titles">
+            <h1>Accounts</h1>
+            <a href="/add_account"><h4>Add Account</h4></a>
+        </div>
+        <div class="bar-titles">
+            <h1>Budgets</h1>
+            <a href="/add_budget"><h4>Add Budget</h4></a>
+            <a href="/show_budgets"><h4>Show And Edit Budgets</h4></a>
+        </div>
 
-    <h1>Accounts</h1>
-    <div class="table-container">
+        <div class="bar-titles">
+            <h1>Expenses</h1>
+            <a href="/record_planned_expense"><h4>Record Planned Expense</h4></a>
+            <a href="/record_unplanned_expense"><h4>Record Unplanned Expense</h4></a>     
+            <div class="expenses">
+                <a href="/show_planned_expenses"><h4>Show and Edit Planned expenses</h4></a>
+                <a href="/add_planned_expense"><h5>Add Planned Expenses</h5></a>
+                <a href="/edit_planned_expenses"><h5>Set New Monthly Budgets</h5></a>
+            </div>
+        </div>
 
-        <table>
-            <thead>
-                <tr class="titles">
-                    <th>Name</th>
-                    <th>Balance</th>
-                    <th>Date Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for account in accounts %}
-                <tr>
-                    <td>{{ account.name }}</td>
-                    <td>{{ account.balance }}</td>
-                    <td>{{ account.date_creation }}</td>
-                    <td>
-                        <!-- Delete Button -->
-                        <form method="POST" action="{{ url_for('delete_account', account_id=account.id) }}" style="display: inline;">
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete this account?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="bar-titles">
+            <h1>Incomes</h1>
+            <a href="/add_income"><h4>Add Income</h4></a>
+            <a href="/record_income"><h4>Record Income</h4></a>
+            <a href="/show_incomes"><h4>Show And Edit Incomes</h4></a>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Categories</h1>
+            <a href="/add_category"><h4>Add Category</h4></a>
+            <a href="/show_categories"><h4>Show And Edit Categories</h4></a>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Transactions</h1>
+            <a href="/show_transactions"><h4>Show Transactions</h4></a>
+        </div>
+       
     </div>
+    <div class="main-content">
+        <h1>Accounts</h1>
+        <div class="table-container">
+    
+            <table>
+                <thead>
+                    <tr class="titles">
+                        <th>Name</th>
+                        <th>Balance</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.name }}</td>
+                        <td>{{ account.balance }}</td>
+                        <td>{{ account.date_creation }}</td>
+                        <td>
+                            <!-- Delete Button -->
+                            <form method="POST" action="{{ url_for('delete_account', account_id=account.id) }}" style="display: inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this account?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
 </body>
 </html>

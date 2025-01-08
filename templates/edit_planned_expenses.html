@@ -5,12 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Planned Expenses</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
-            color: aliceblue;
-            padding: 20px;
-        }
+         * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; 
+    overflow: hidden; 
+}
+
+
+body {
+    background: linear-gradient(to bottom, rgb(37, 36, 36), #999);
+    color: aliceblue;
+    min-height: 100vh;
+    display: flex; 
+    flex-direction: row;
+}
+
+.bar {
+    background: rgb(37, 36, 36);
+    width: 20%; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 5px;
+}
+
+.main-content {
+    width: 80%; 
+    display: flex;
+    flex-direction: column; 
+    padding: 20px;
+    gap: 20px; 
+    height: 100%;
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+
+
+.bar-titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    width: 100%;
+    margin: 5px;
+}
+
+.bar-titles:hover {
+    background-color: #2C3539;
+}
+
+.expenses {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    width: 100%;
+    margin: 5px;
+}
+
+.expenses:hover {
+    background-color: gray;
+}
+
+
+
+h1 {
+    color: #D4AF37;
+    margin: 0 0 20px; 
+    text-align: center;
+    font-size: 2rem;
+}
+
 
         table {
             width: 100%;
@@ -40,13 +121,16 @@
         }
 
         button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
+            margin: 20px auto;
+            background-color: rgb(37, 36, 36);
+            border: 2px solid aliceblue;
             border-radius: 5px;
+            color: aliceblue;
             cursor: pointer;
-            margin-top: 20px;
         }
 
         button:hover {
@@ -54,21 +138,77 @@
         }
 
         a {
-            text-decoration: none;
-            color: white;
             background-color: rgb(37, 36, 36);
-            padding: 10px 20px;
-            border-radius: 5px;
+            text-decoration: none;
             display: inline-block;
+            text-align: center;
+            justify-content: center;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border-radius: 5px;
+            color: aliceblue;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         a:hover {
             background-color: rgb(80, 80, 80);
         }
+
+        
     </style>
 </head>
 <body>
-    <h1>Edit Planned Expenses</h1>
+
+    <div class="bar">
+
+        <div class="bar-titles">
+            <a href="/"><h2>Home</h2></a>
+        </div>
+        
+        <div class="bar-titles">
+            <h1>Accounts</h1>
+            <a href="/add_account"><h4>Add Account</h4></a>
+            <a href="/show_accounts"><h4>Show And Edit Accounts</h4></a>
+        </div>
+        <div class="bar-titles">
+            <h1>Budgets</h1>
+            <a href="/add_budget"><h4>Add Budget</h4></a>
+            <a href="/show_budgets"><h4>Show And Edit Budgets</h4></a>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Expenses</h1>
+            <a href="/record_planned_expense"><h4>Record Planned Expense</h4></a>
+            <a href="/record_unplanned_expense"><h4>Record Unplanned Expense</h4></a>     
+            <div class="expenses">
+                <a href="/show_planned_expenses"><h4>Show and Edit Planned expenses</h4></a>
+                <a href="/add_planned_expense"><h5>Add Planned Expenses</h5></a>
+            </div>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Incomes</h1>
+            <a href="/add_income"><h4>Add Income</h4></a>
+            <a href="/record_income"><h4>Record Income</h4></a>
+            <a href="/show_incomes"><h4>Show And Edit Incomes</h4></a>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Categories</h1>
+            <a href="/add_category"><h4>Add Category</h4></a>
+            <a href="/show_categories"><h4>Show And Edit Categories</h4></a>
+        </div>
+
+        <div class="bar-titles">
+            <h1>Transactions</h1>
+            <a href="/show_transactions"><h4>Show Transactions</h4></a>
+        </div>
+       
+    </div>
+
+    <div class="main-content">
+        <h1>Edit Planned Expenses</h1>
     <form method="POST" action="{{ url_for('edit_planned_expenses') }}">
         <table>
             <thead>
@@ -92,6 +232,7 @@
         </table>
         <button type="submit">Save Changes</button>
     </form>
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </div>
+    
 </body>
 </html>
