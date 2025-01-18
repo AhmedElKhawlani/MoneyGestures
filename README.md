@@ -43,7 +43,7 @@ Start the application by running:
 #### `install.sh`
 This script installs all the required dependencies for the project. It ensures your environment is ready to run the application.
 
-#### `runup.sh`
+#### `run_app.sh`
 This script starts the Flask application server, allowing you to use MoneyGestures locally.
 
 ## Database Structure
@@ -64,12 +64,6 @@ This script starts the Flask application server, allowing you to use MoneyGestur
 - `name`: Name of the budget.
 - `initial_amount`: Initial amount allocated to the budget.
 - `actual_amount`: Current amount in the budget (default: 0).
-
-## Contributing
-Contributions are welcome! Feel free to submit a pull request or open an issue for suggestions or bugs.
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ## Contact
 For any inquiries, please contact the project maintainer via [GitHub Issues](https://github.com/AhmedElKhawlani/MoneyGestures/issues).
