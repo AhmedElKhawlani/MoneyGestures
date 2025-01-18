@@ -33,14 +33,9 @@ MoneyGestures is a web application designed for personal money management. It al
 
 ### Running the Application
 
-1. Start the application by running:
+Start the application by running:
    ```bash
-   ./runup.sh
-   ```
-
-2. Open your web browser and navigate to:
-   ```
-   http://127.0.0.1:5000
+   ./run_app.sh
    ```
 
 ### Scripts
