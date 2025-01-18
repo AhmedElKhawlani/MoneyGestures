@@ -46,24 +46,5 @@ This script installs all the required dependencies for the project. It ensures y
 #### `run_app.sh`
 This script starts the Flask application server, allowing you to use MoneyGestures locally.
 
-## Database Structure
-
-### Transactions Table
-- `id`: Unique identifier for the transaction.
-- `datetime`: Date and time of the transaction.
-- `description`: Description of the transaction.
-- `category`: Category of the transaction.
-- `nature`: Nature of the transaction (e.g., income or expense).
-- `amount`: Amount of the transaction.
-- `account`: Account associated with the transaction.
-- `budget`: Budget linked to the transaction.
-
-### Budgets Table
-- `id`: Unique identifier for the budget.
-- `date_creation`: Date of budget creation.
-- `name`: Name of the budget.
-- `initial_amount`: Initial amount allocated to the budget.
-- `actual_amount`: Current amount in the budget (default: 0).
-
 ## Contact
 For any inquiries, please contact the project maintainer via [GitHub Issues](https://github.com/AhmedElKhawlani/MoneyGestures/issues).
